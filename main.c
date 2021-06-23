@@ -10,14 +10,14 @@ int main (void)
 {
 	while (1)
 	{
-		for (u32 i=0; i<64; i = i + 4)
+		for (int i=0; i<16; i = i++)
 		{
-			((u32*)(BRAM_WRITE_BASE_ADDRESS + (i)))[0] = HIGH;
+			((u32*)(BRAM_WRITE_BASE_ADDRESS + (address+i)))[0] = HIGH;
 		}
 		sleep(2);
-		for (u32 i=0; i<64; i = i + 4)
+		for (int i=0; i<16; i = i++)
 		{
-			((u32*)(BRAM_WRITE_BASE_ADDRESS + (i)))[0] = LOW;
+			((u32*)(BRAM_WRITE_BASE_ADDRESS + (address+i)))[0] = LOW;
 		}
 		sleep(2);
 	}
