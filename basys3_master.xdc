@@ -3,6 +3,10 @@ set_property PACKAGE_PIN W5 [get_ports CLK_100]
 	set_property IOSTANDARD LVCMOS33 [get_ports CLK_100]
 	create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports CLK_100]
 
+#Buttons
+set_property PACKAGE_PIN U18 [get_ports RST]                        
+    set_property IOSTANDARD LVCMOS33 [get_ports RST]
+
 # LEDs
 set_property PACKAGE_PIN U16 [get_ports {LED[0]}]					
 	set_property IOSTANDARD LVCMOS33 [get_ports {LED[0]}]
@@ -37,14 +41,37 @@ set_property PACKAGE_PIN P1 [get_ports {LED[14]}]
 set_property PACKAGE_PIN L1 [get_ports {LED[15]}]					
 	set_property IOSTANDARD LVCMOS33 [get_ports {LED[15]}]
 	
-	
-	#USB-RS232 Interface
-set_property PACKAGE_PIN B18 [get_ports UART_rxd]                        
-    set_property IOSTANDARD LVCMOS33 [get_ports UART_rxd]
-set_property PACKAGE_PIN A18 [get_ports UART_txd]                        
-    set_property IOSTANDARD LVCMOS33 [get_ports UART_txd]
+# Switches
+set_property PACKAGE_PIN V17 [get_ports {SWITCH[0]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[0]}]
+set_property PACKAGE_PIN V16 [get_ports {SWITCH[1]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[1]}]
+set_property PACKAGE_PIN W16 [get_ports {SWITCH[2]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[2]}]
+set_property PACKAGE_PIN W17 [get_ports {SWITCH[3]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[3]}]
+set_property PACKAGE_PIN W15 [get_ports {SWITCH[4]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[4]}]
+set_property PACKAGE_PIN V15 [get_ports {SWITCH[5]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[5]}]
+set_property PACKAGE_PIN W14 [get_ports {SWITCH[6]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[6]}]
+set_property PACKAGE_PIN W13 [get_ports {SWITCH[7]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[7]}]
+set_property PACKAGE_PIN V2 [get_ports {SWITCH[8]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[8]}]
+set_property PACKAGE_PIN T3 [get_ports {SWITCH[9]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[9]}]
+set_property PACKAGE_PIN T2 [get_ports {SWITCH[10]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[10]}]
+set_property PACKAGE_PIN R3 [get_ports {SWITCH[11]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[11]}]
+set_property PACKAGE_PIN W2 [get_ports {SWITCH[12]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[12]}]
+set_property PACKAGE_PIN U1 [get_ports {SWITCH[13]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[13]}]
+set_property PACKAGE_PIN T1 [get_ports {SWITCH[14]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[14]}]
+set_property PACKAGE_PIN R2 [get_ports {SWITCH[15]}]                    
+    set_property IOSTANDARD LVCMOS33 [get_ports {SWITCH[15]}]
     
-    
-#Buttons
-set_property PACKAGE_PIN U18 [get_ports RST]                        
-    set_property IOSTANDARD LVCMOS33 [get_ports RST]
