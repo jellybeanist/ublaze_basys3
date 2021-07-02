@@ -22,7 +22,8 @@ entity register_interface is
         EXT_REG_IF_EN               : IN    STD_LOGIC;  
         EXT_REG_IF_WR_EN            : IN    STD_LOGIC_VECTOR(3 DOWNTO 0); 
                            
-        CTRL_REGS                   : OUT   CONTROL_REGISTERS
+        CTRL_REGS                   : OUT   CONTROL_REGISTERS;
+        STAT_REGS                   : IN    STAT_REGISTERS
     );
 end register_interface;
 
@@ -33,11 +34,11 @@ begin
     write_registers_p : process (CLK)
     begin
         if rising_edge(CLK) then
-            
+
             if (EXT_REG_IF_EN = '1' and EXT_REG_IF_WR_EN = "1111") then
                 case EXT_REG_IF_ADDR(13 downto 2) is
-                    
-                    -- UART
+                                   
+                    --LEDS
                     when x"000" => CTRL_REGS.ext_led_00             <= EXT_REG_IF_WR_DATA;
                     when x"001" => CTRL_REGS.ext_led_01             <= EXT_REG_IF_WR_DATA;
                     when x"002" => CTRL_REGS.ext_led_02             <= EXT_REG_IF_WR_DATA;
@@ -54,8 +55,41 @@ begin
                     when x"00D" => CTRL_REGS.ext_led_13             <= EXT_REG_IF_WR_DATA;
                     when x"00E" => CTRL_REGS.ext_led_14             <= EXT_REG_IF_WR_DATA;
                     when x"00F" => CTRL_REGS.ext_led_15             <= EXT_REG_IF_WR_DATA;
-
-                    when others => null;
+  
+                                    
+                    when others => null;          
+            end case;        
+        end if;
+    end if;
+end process;                    
+    
+    read_registers_p : process (CLK)
+    begin
+        if rising_edge(CLK) then
+ 
+            if (EXT_REG_IF_EN = '1' and EXT_REG_IF_WR_EN = "0000") then
+                EXT_REG_IF_RD_DATA <= (others => '0');
+                case EXT_REG_IF_ADDR(13 downto 2) is
+                                               
+                    --SWITCHES
+                    when x"100" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_00;
+                    when x"101" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_01;
+                    when x"102" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_02;
+                    when x"103" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_03;
+                    when x"104" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_04;
+                    when x"105" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_05;
+                    when x"106" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_06;
+                    when x"107" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_07;
+                    when x"108" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_08;
+                    when x"109" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_09;
+                    when x"10A" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_10;
+                    when x"10B" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_11;
+                    when x"10C" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_12;
+                    when x"10D" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_13;
+                    when x"10E" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_14;
+                    when x"10F" => EXT_REG_IF_RD_DATA               <= STAT_REGS.ext_sw_15;
+ 
+                    when others => null; 
                 end case;
             end if;
         end if;
