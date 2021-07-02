@@ -12,13 +12,12 @@ USE WORK.DATA_TYPES.ALL;
 entity TOP is
     Port 
     ( 
-        CLK_100 : IN STD_LOGIC;
-        RST     : IN STD_LOGIC;
+        CLK_100     : IN STD_LOGIC;
+        RST         : IN STD_LOGIC;
         
-        LED     : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
-        
-        UART_txd : OUT STD_LOGIC;
-        UART_rxd : IN STD_LOGIC        
+        LED         : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+        SWITCH      : IN STD_LOGIC_VECTOR (15 DOWNTO 0)
+              
         
     );
 end TOP;
@@ -26,9 +25,7 @@ end TOP;
 architecture Behavioral of TOP is
 
     signal i_rst_n : std_logic;
-    
-    signal i_uart_rxd : std_logic;
-    signal i_uart_txd : std_logic;
+    signal i_rst : std_logic;
     
     signal reg_if_addr : std_logic_vector(15 downto 0);
     signal reg_if_wr_data : std_logic_vector(31 downto 0);
@@ -36,12 +33,29 @@ architecture Behavioral of TOP is
     signal reg_if_en : std_logic;
     signal reg_if_wr_en : std_logic_vector(3 downto 0);
     
+    signal alive_counter        :   std_logic_vector(31 downto 0) := (others => '0');
+    signal i_clk100             :   std_logic   := '0';
+    
     signal CTRL_REGS : CONTROL_REGISTERS;
+    signal STAT_REGS : STAT_REGISTERS;
     
 
 begin
-    
-    i_rst_n <= not RST;
+i_rst       <= RST;
+i_rst_n     <= not RST;
+i_clk100    <= CLK_100; -- for BASYS 3
+
+U0: process (i_clk100) begin
+    if rising_edge(i_clk100) then
+        if (alive_counter = 100_000) then
+            alive_counter <= (others => '0');
+            --i_rst <= '0';
+        else
+            alive_counter <= alive_counter + 1;
+        end if;
+    end if;
+end process;
+
     
     LED(0)          <=          CTRL_REGS.ext_led_00(0);
     LED(1)          <=          CTRL_REGS.ext_led_01(0);
@@ -60,7 +74,25 @@ begin
     LED(14)         <=          CTRL_REGS.ext_led_14(0);
     LED(15)         <=          CTRL_REGS.ext_led_15(0);
     
-    U0: entity work.bd_wrapper
+    
+    STAT_REGS.ext_sw_00(0)                 <=    SWITCH(0); 
+    STAT_REGS.ext_sw_01(0)                 <=    SWITCH(1); 
+    STAT_REGS.ext_sw_02(0)                 <=    SWITCH(2); 
+    STAT_REGS.ext_sw_03(0)                 <=    SWITCH(3); 
+    STAT_REGS.ext_sw_04(0)                 <=    SWITCH(4); 
+    STAT_REGS.ext_sw_05(0)                 <=    SWITCH(5); 
+    STAT_REGS.ext_sw_06(0)                 <=    SWITCH(6); 
+    STAT_REGS.ext_sw_07(0)                 <=    SWITCH(7); 
+    STAT_REGS.ext_sw_08(0)                 <=    SWITCH(8); 
+    STAT_REGS.ext_sw_09(0)                 <=    SWITCH(9); 
+    STAT_REGS.ext_sw_10(0)                 <=    SWITCH(10); 
+    STAT_REGS.ext_sw_11(0)                 <=    SWITCH(11); 
+    STAT_REGS.ext_sw_12(0)                 <=    SWITCH(12); 
+    STAT_REGS.ext_sw_13(0)                 <=    SWITCH(13); 
+    STAT_REGS.ext_sw_14(0)                 <=    SWITCH(14); 
+    STAT_REGS.ext_sw_15(0)                 <=    SWITCH(15); 
+    
+    U1: entity work.bd_wrapper
     port map
     (
         CLK100 => CLK_100,
@@ -71,15 +103,11 @@ begin
         REG_IF_dout => reg_if_rd_data,
         REG_IF_en => reg_if_en,
         REG_IF_rst => open,
-        REG_IF_we => reg_if_wr_en,
-        
-        uart_rxd => i_uart_rxd,
-        uart_txd => i_uart_txd
-        
+        REG_IF_we => reg_if_wr_en
         
     );
     
-    U1: entity work.register_interface
+    U2: entity work.register_interface
     port map
     (
         CLK                 =>  CLK_100,                   
@@ -91,6 +119,8 @@ begin
         EXT_REG_IF_EN       =>  reg_if_en,        
         EXT_REG_IF_WR_EN    =>  reg_if_wr_en,           
                            
-        CTRL_REGS           =>  CTRL_REGS                   
+        CTRL_REGS           =>  CTRL_REGS,  
+        STAT_REGS           =>  STAT_REGS                 
     );
-end Behavioral;
+
+end Behavioral;    
